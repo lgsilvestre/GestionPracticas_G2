@@ -5,6 +5,8 @@ import Estudiante from './dashboard-estudiante/Estudiante';
 import 'firebase/auth';
 import { UserContext } from './providers/UserProvider';
 import { Grommet } from 'grommet';
+import Formulario from './formulario/Formulario';
+import Steper from './formulario/Steper';
 
 const theme = {
   global: {
@@ -24,7 +26,7 @@ function App() {
   const user = useContext(UserContext);
   return (
     <Grommet theme={theme} full>
-      {user ? <Estudiante /> : <Landing />}
+      {user ? <Steper /> : <Landing />}
     </Grommet>
   );
 }
