@@ -26,7 +26,7 @@ function App() {
   const user = useContext(UserContext);
   return (
     <Grommet theme={theme} full>
-      {user ? <Steper /> : <Landing />}
+      {user ? <Steper /> : <Steper />}
     </Grommet>
   );
 }
