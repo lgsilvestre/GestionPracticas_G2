@@ -1,10 +1,22 @@
 import { useState } from 'react';
 import { Stepper } from 'react-form-stepper';
-import { Button, Form, FormField, TextInput, Box, Select, DateInput } from 'grommet';
+import {
+  Button,
+  Form,
+  FormField,
+  TextInput,
+  Box,
+  Select,
+  DateInput
+} from 'grommet';
 import Formulario from './Formulario';
 const Steper = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [form, setFormState] = useState({});
+  const [form, setFormState] = useState({
+    modality: '',
+    startDate: '',
+    endDate: ''
+  });
   const [value, setValue] = useState('Online');
   //hay que setear los formularios
 
@@ -98,7 +110,10 @@ const Steper = () => {
                   }
                 />
               </FormField>
-              <FormField name='emergencyPhone' htmlFor='text-input-id' label='Telefono de emergencia'>
+              <FormField
+                name='emergencyPhone'
+                htmlFor='text-input-id'
+                label='Telefono de emergencia'>
                 <TextInput
                   id='text-input-id'
                   name='emergencyPhone'
@@ -106,7 +121,7 @@ const Steper = () => {
                   onChange={(e) =>
                     setFormState((prevState) => ({
                       ...prevState,
-                      phoneStudent: e.target.value
+                      emergencyPhoneStudent: e.target.value
                     }))
                   }
                 />
@@ -124,22 +139,33 @@ const Steper = () => {
                   }
                 />
               </FormField>
-              <FormField name='modality' htmlFor='text-input-id' label='Modalidad'>
-                
+              <FormField
+                name='modality'
+                htmlFor='text-input-id'
+                label='Modalidad'>
                 <Select
                   options={['Online', 'Presencial', 'Mixta']}
                   value={form.modality}
-                  onChange={({ option }) => setValue(option)
+                  onChange={({ option }) =>
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      modality: option
+                    }))
                   }
                 />
-
               </FormField>
-              <FormField name='healthCare' htmlFor='text-input-id' label='Seguro de salud'>
-                
+              <FormField
+                name='healthCare'
+                htmlFor='text-input-id'
+                label='Seguro de salud'>
                 <Select
                   options={['Fonasa', 'Isapre', 'No se sabe']}
-                  value={form.healthCare}
-                  onChange={({ option }) => setValue(option)
+                  value={form.healtCare}
+                  onChange={({ option }) =>
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      healtCare: option
+                    }))
                   }
                 />
               </FormField>
@@ -190,31 +216,37 @@ const Steper = () => {
                 <FormField
                   name='startDate'
                   htmlFor='date-input-id'
-                  label='Inicio de practica' 
-                >
+                  label='Inicio de practica'>
                   <DateInput
                     id='date-input-id'
                     name='startDate'
-                    format="mm/dd/yyyy"
-                    value={(new Date()).toISOString()}
-                    onChange={({ value }) => {}
-                      }
-                />
+                    format='mm/dd/yyyy'
+                    value={form.startDate}
+                    onChange={({ value }) => {
+                      setFormState((prevState) => ({
+                        ...prevState,
+                        startDate: value
+                      }));
+                    }}
+                  />
                 </FormField>
                 <FormField
                   name='endDate'
                   htmlFor='date-input-id'
-                  label='Fin de practica' 
-                >
+                  label='Fin de practica'>
                   <DateInput
                     id='date-input-id'
                     name='endDate'
-                    format="mm/dd/yyyy"
-                    value={(new Date()).toISOString()}
-                    onChange={({ value }) => {}
-                      }
-                />
-                  </FormField>
+                    format='mm/dd/yyyy'
+                    value={form.endDate}
+                    onChange={({ value }) => {
+                      setFormState((prevState) => ({
+                        ...prevState,
+                        endDate: value
+                      }));
+                    }}
+                  />
+                </FormField>
               </Form>
               <h1>Informacion del supervisor</h1>
               <Form>
