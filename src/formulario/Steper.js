@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Stepper } from 'react-form-stepper';
-import { Button, Form, FormField, TextInput, Box } from 'grommet';
+import { Button, Form, FormField, TextInput, Box, Select, DateInput } from 'grommet';
 import Formulario from './Formulario';
 const Steper = () => {
-  const [activeStep, setActiveStep] = useState('');
+  const [activeStep, setActiveStep] = useState(0);
   const [form, setFormState] = useState({});
-
+  const [value, setValue] = useState('Online');
   //hay que setear los formularios
 
   const handleBack = () => {
@@ -23,8 +23,8 @@ const Steper = () => {
     <>
       <Stepper
         steps={[
-          { label: 'Informacion Personal' },
-          { label: 'Informacion de la empresa' },
+          { label: 'Información personal' },
+          { label: 'Información de la empresa' },
           { label: 'Archivos' }
         ]}
         activeStep={activeStep}
@@ -37,7 +37,7 @@ const Steper = () => {
           responsive='true'
           width='100%'>
           <Box pad='large' width='75%' justify='center' responsive='true'>
-            <h1>Informacion personal</h1>
+            <h1>Información personal</h1>
             <Form>
               <FormField
                 name='name'
@@ -98,6 +98,19 @@ const Steper = () => {
                   }
                 />
               </FormField>
+              <FormField name='emergencyPhone' htmlFor='text-input-id' label='Telefono de emergencia'>
+                <TextInput
+                  id='text-input-id'
+                  name='emergencyPhone'
+                  value={form.emergencyPhoneStudent}
+                  onChange={(e) =>
+                    setFormState((prevState) => ({
+                      ...prevState,
+                      phoneStudent: e.target.value
+                    }))
+                  }
+                />
+              </FormField>
               <FormField name='rut' htmlFor='text-input-id' label='RUT'>
                 <TextInput
                   id='text-input-id'
@@ -108,6 +121,25 @@ const Steper = () => {
                       ...prevState,
                       rutStudent: e.target.value
                     }))
+                  }
+                />
+              </FormField>
+              <FormField name='modality' htmlFor='text-input-id' label='Modalidad'>
+                
+                <Select
+                  options={['Online', 'Presencial', 'Mixta']}
+                  value={form.modality}
+                  onChange={({ option }) => setValue(option)
+                  }
+                />
+
+              </FormField>
+              <FormField name='healthCare' htmlFor='text-input-id' label='Seguro de salud'>
+                
+                <Select
+                  options={['Fonasa', 'Isapre', 'No se sabe']}
+                  value={form.healthCare}
+                  onChange={({ option }) => setValue(option)
                   }
                 />
               </FormField>
@@ -155,6 +187,34 @@ const Steper = () => {
                     }
                   />
                 </FormField>
+                <FormField
+                  name='startDate'
+                  htmlFor='date-input-id'
+                  label='Inicio de practica' 
+                >
+                  <DateInput
+                    id='date-input-id'
+                    name='startDate'
+                    format="mm/dd/yyyy"
+                    value={(new Date()).toISOString()}
+                    onChange={({ value }) => {}
+                      }
+                />
+                </FormField>
+                <FormField
+                  name='endDate'
+                  htmlFor='date-input-id'
+                  label='Fin de practica' 
+                >
+                  <DateInput
+                    id='date-input-id'
+                    name='endDate'
+                    format="mm/dd/yyyy"
+                    value={(new Date()).toISOString()}
+                    onChange={({ value }) => {}
+                      }
+                />
+                  </FormField>
               </Form>
               <h1>Informacion del supervisor</h1>
               <Form>
