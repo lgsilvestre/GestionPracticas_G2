@@ -39,6 +39,10 @@ const items = [
     label: 'Editar Formulario',
     icon: <DocumentText style={{ color: 'inherit' }} />,
     path: '/wip'
+  },
+  {
+    label: 'Editar info',
+    path: 'internship-info'
   }
 ];
 function BarraLateral() {
@@ -73,4 +77,5 @@ function BarraLateral() {
     </>
   );
 }
+
 export default BarraLateral;

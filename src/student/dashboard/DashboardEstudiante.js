@@ -1,12 +1,4 @@
-import {
-  Accordion,
-  AccordionPanel,
-  Box,
-  Heading,
-  Markdown,
-  Spinner
-} from 'grommet';
-import { Halt } from 'grommet-icons';
+import { Accordion, AccordionPanel, Box, Heading, Spinner } from 'grommet';
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../providers/Auth';
 import Documentos from './extras/Documentos';
@@ -16,9 +8,12 @@ import { db, storage } from '../../firebase';
 import { Route, Switch } from 'react-router-dom';
 import StudentApplications from './applications/StudentApplications';
 import ApplicationDetails from './applications/ApplicationDetails';
+import { convertFromRaw, convertToRaw, EditorState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 function DashboardEstudiante(props) {
   const { user, userData } = useAuth();
+  const [generalInfo, setGeneralInfo] = useState();
   const [careerInternshipInfo, setCareerInternshipInfo] = useState();
   const [docs, setDocs] = useState([]);
   const [loaded, setLoaded] = useState(false);
@@ -26,11 +21,22 @@ function DashboardEstudiante(props) {
 
   useEffect(() => {
     if (userData) {
-      db.collection('careerInternshipInfo')
-        .where('careerId', '==', userData.careerId)
+      db.collection('careers')
+        .doc('general')
         .get()
-        .then((querySnapshot) =>
-          setCareerInternshipInfo(querySnapshot.docs[0].data())
+        .then((info) =>
+          setGeneralInfo(
+            EditorState.createWithContent(convertFromRaw(info.data().info))
+          )
+        );
+
+      db.collection('careers')
+        .doc(userData.careerId)
+        .get()
+        .then((career) =>
+          setCareerInternshipInfo(
+            EditorState.createWithContent(convertFromRaw(career.data().info))
+          )
         );
 
       storage
@@ -61,10 +67,22 @@ function DashboardEstudiante(props) {
               <Heading margin='small'>
                 ¡Hola, {userData && userData.name}!
               </Heading>
-              <Markdown margin='small'>
-                {careerInternshipInfo &&
-                  careerInternshipInfo.info.replaceAll('\\n', '\n')}
-              </Markdown>
+              <Box
+                margin='medium'
+                dangerouslySetInnerHTML={{
+                  __html: draftToHtml(
+                    convertToRaw(generalInfo.getCurrentContent())
+                  )
+                }}
+              />
+              <Box
+                margin='medium'
+                dangerouslySetInnerHTML={{
+                  __html: draftToHtml(
+                    convertToRaw(careerInternshipInfo.getCurrentContent())
+                  )
+                }}
+              />
               <Accordion margin='small'>
                 <AccordionPanel label='Documentos'>
                   <Documentos docs={docs} />

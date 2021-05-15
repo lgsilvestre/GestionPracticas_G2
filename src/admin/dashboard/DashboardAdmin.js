@@ -12,23 +12,15 @@ import {
   Chart
 } from 'grommet';
 import React, { useEffect, useState } from 'react';
-import QuickAccess from './QuickAccess';
 import useAuth from '../../providers/Auth';
 import { Link, Route, Switch } from 'react-router-dom';
 import ApplicationsList from '../applications/ApplicationsList';
 import BarraLateral from '../../sideBar/BarraLateral';
 import Application from '../applications/Application';
-import {
-  List,
-  Group,
-  Task,
-  Upload,
-  DocumentText,
-  LinkNext,
-  Halt
-} from 'grommet-icons';
+import { LinkNext, Halt } from 'grommet-icons';
 
 import { db } from '../../firebase';
+import InternshipInfo from '../InternshipInfo';
 
 function DashboardAdmin() {
   const { user, userData } = useAuth();
@@ -133,6 +125,9 @@ function DashboardAdmin() {
           </Route>
           <Route path='/applications/:id'>
             <Application />
+          </Route>
+          <Route path='/internship-info'>
+            <InternshipInfo />
           </Route>
           <Route exact path='/wip'>
             <Box
