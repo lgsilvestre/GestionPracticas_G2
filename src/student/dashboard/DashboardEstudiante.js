@@ -1,4 +1,11 @@
-import { Accordion, AccordionPanel, Box, Heading, Spinner } from 'grommet';
+import {
+  Accordion,
+  AccordionPanel,
+  Box,
+  Heading,
+  List,
+  Spinner
+} from 'grommet';
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../providers/Auth';
 import Documentos from './extras/Documentos';
@@ -40,9 +47,14 @@ function DashboardEstudiante(props) {
         );
 
       storage
-        .ref(`careers-docs/${userData.careerId}`)
+        .ref('careers-docs/general')
         .listAll()
         .then((res) => setDocs(res.items));
+
+      storage
+        .ref(`careers-docs/${userData.careerId}`)
+        .listAll()
+        .then((res) => setDocs((docs) => docs.concat(res.items)));
 
       db.collection('internships')
         .where('studentId', '==', user.uid)
@@ -85,7 +97,13 @@ function DashboardEstudiante(props) {
               />
               <Accordion margin='small'>
                 <AccordionPanel label='Documentos'>
-                  <Documentos docs={docs} />
+                  <List
+                    data={docs}
+                    primaryKey='name'
+                    onClickItem={(e) =>
+                      e.item.getDownloadURL().then((url) => window.open(url))
+                    }
+                  />
                 </AccordionPanel>
                 <AccordionPanel label='Prácticas'>
                   <Practicas practicas={practicas} />
